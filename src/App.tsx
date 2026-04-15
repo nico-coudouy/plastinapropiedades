@@ -642,7 +642,7 @@ export default function App() {
               </button>
               <button 
                 onClick={handleLogout}
-                className="text-gray-400 hover:text-red-500 p-2 transition-colors"
+                className="bg-[#4A2B6B] hover:bg-[#2E1848] text-white px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest transition-all shadow-md hidden sm:block"
                 title="Cerrar Sesión"
               >
                 <LogOut size={20} />
