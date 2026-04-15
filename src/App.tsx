@@ -1152,10 +1152,22 @@ export default function App() {
               </p>
               
               <div className="flex gap-4 pt-2">
-                <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-gold transition-colors">
+                <a 
+                  href="https://www.instagram.com/plastinapropiedades/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-gold transition-colors"
+                  aria-label="Instagram"
+                >
                   <Instagram size={20} />
                 </a>
-                <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-gold transition-colors">
+                <a 
+                  href="https://facebook.com/tu_usuario_facebook" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-gold transition-colors"
+                  aria-label="Facebook"
+                >
                   <Facebook size={20} />
                 </a>
               </div>
