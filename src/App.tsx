@@ -347,14 +347,16 @@ export default function App() {
   const [uploadedPhotos, setUploadedPhotos] = useState<string[]>([]);
   const [photoUrlsText, setPhotoUrlsText] = useState('');
 
-  // Auth Listener
+  /// Auth Listener
   useEffect(() => {
-    supabase.auth.getSession().then(({  { session } }) => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
     });
-    const {  { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
     });
+    
     return () => subscription.unsubscribe();
   }, []);
 
