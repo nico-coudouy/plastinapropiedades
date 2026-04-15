@@ -1080,12 +1080,17 @@ export default function App() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         {/* Título principal centrado y elegante */}
         
-        <div className="text-center mb-4">
-          <h2>Propiedades Disponibles</h2>
-          <p>Experiencia local, asesoramiento personalizado.</p>
-        </div>
-        <div className="mb-6 text-center">
-          <p>Explorá nuestra selección exclusiva de propiedades en Mar del Plata. Encontrá el hogar que siempre soñaste con Plastina Propiedades.</p>
+        <div className="text-center mb-16">
+          <h2 className="text-4xl sm:text-5xl font-serif font-bold text-navy mb-4">
+            Propiedades Disponibles
+          </h2>
+          <p className="text-gray-500 text-lg max-w-2xl mx-auto font-light italic">
+            Experiencia local, asesoramiento personalizado.
+          </p>
+          <div className="w-24 h-0.5 bg-gold mx-auto mt-6"></div>
+          <p className="text-gray-400 max-w-xl text-center mx-auto mb-12">
+          Explorá nuestra selección exclusiva de propiedades en Mar del Plata. Encontrá el hogar que siempre soñaste con Plastina Propiedades.
+          </p>
         </div>
 
         {loading ? (
