@@ -349,10 +349,10 @@ export default function App() {
 
   // Auth Listener
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then(({  { session } }) => {
       setSession(session);
     });
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const {  { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
     });
     return () => subscription.unsubscribe();
@@ -963,13 +963,8 @@ export default function App() {
             </div>
           </div>
 
-          <nav className="hidden md:flex items-center gap-8 text-xs font-bold uppercase tracking-widest text-navy">
-            <a href="#" className="hover:text-gold transition-colors">Inicio</a>
-            <a href="#" className="hover:text-gold transition-colors">Venta</a>
-            <a href="#" className="hover:text-gold transition-colors">Alquiler</a>
-            <a href="#" className="hover:text-gold transition-colors">Contacto</a>
-          </nav>
-
+          {/* --- MENU ELIMINADO AQUÍ --- */}
+          
           <div className="flex items-center gap-4">
             <a 
               href="https://wa.me/+5492234371111" 
@@ -1124,7 +1119,7 @@ export default function App() {
 
       <footer className="bg-navy text-white pt-20 pb-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
             <div className="col-span-1 md:col-span-2">
               <div className="flex items-center gap-4 mb-6">
                 <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-navy shadow-lg">
@@ -1148,16 +1143,8 @@ export default function App() {
               </div>
             </div>
 
-            <div>
-              <h4 className="text-gold font-bold uppercase text-xs tracking-widest mb-6">Navegación</h4>
-              <ul className="space-y-4 text-sm text-gray-400">
-                <li><a href="#" className="hover:text-white transition-colors">Propiedades en Venta</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Alquileres Temporarios</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Tasaciones</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Sobre Nosotros</a></li>
-              </ul>
-            </div>
-
+            {/* Eliminamos la columna de Navegación del footer también */}
+            
             <div>
               <h4 className="text-gold font-bold uppercase text-xs tracking-widest mb-6">Contacto</h4>
               <ul className="space-y-4 text-sm text-gray-400">
