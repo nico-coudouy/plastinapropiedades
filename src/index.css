@@ -14,7 +14,7 @@
 
   /* ── Neutros ── */
   --color-carbon:        #1C1C1E;
-  --color-gris-suave:    #F5F2F8;
+  --color-gris-suave:    #ebe4f5;
   --color-gris-medio:    #E8E0F0;
   --color-gris-texto:    #6B6675;
 
@@ -28,7 +28,8 @@
 
 @layer base {
   body {
-    @apply font-sans bg-white;
+    @apply font-sans;
+    background-color: #ebe4f5;
     color: var(--color-carbon);
   }
 
