@@ -864,7 +864,6 @@ export default function App() {
                     <div className="space-y-4">
                       <h3 className="text-xs font-bold uppercase tracking-widest text-gold border-b border-gold/20 pb-1">Fotos</h3>
                       
-                      {/* Upload Button */}
                       <div className="mb-4">
                         <label className="block text-[10px] font-bold uppercase text-gray-400 mb-2">Subir imágenes desde tu dispositivo</label>
                         <div className="flex items-center gap-4">
@@ -893,7 +892,6 @@ export default function App() {
                         <p className="text-[10px] text-gray-400 mt-2">Podés seleccionar múltiples imágenes a la vez (JPG, PNG)</p>
                       </div>
 
-                      {/* Preview uploaded images */}
                       {uploadedPhotos.length > 0 && (
                         <div className="mb-4">
                           <label className="block text-[10px] font-bold uppercase text-gray-400 mb-2">Imágenes subidas ({uploadedPhotos.length})</label>
@@ -912,7 +910,6 @@ export default function App() {
                         </div>
                       )}
 
-                      {/* Manual URLs (fallback) */}
                       <div>
                         <label className="block text-[10px] font-bold uppercase text-gray-400 mb-1">O pegá URLs manualmente</label>
                         <textarea 
@@ -953,10 +950,11 @@ export default function App() {
   // --- Public View ---
   return (
     <div className="min-h-screen bg-white">
+      {/* ✅ FIX 1: header más bajo en mobile (h-16) que en desktop (h-24) */}
       <header className="bg-white border-b border-gray-100 sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-24 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-24 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <a href="/" className="w-12 h-12 rounded-xl overflow-hidden shadow-lg hover:opacity-80 transition-opacity block flex-shrink-0">
+            <a href="/" className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl overflow-hidden shadow-lg hover:opacity-80 transition-opacity block flex-shrink-0">
               <img 
                 src="/logo.png" 
                 alt="Plastina Propiedades"
@@ -964,7 +962,7 @@ export default function App() {
               />
             </a>
             <div>
-              <h1 className="text-2xl font-serif font-bold text-navy leading-none">Plastina</h1>
+              <h1 className="text-xl sm:text-2xl font-serif font-bold text-navy leading-none">Plastina</h1>
               <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-gold">Propiedades</p>
             </div>
           </div>
@@ -980,9 +978,10 @@ export default function App() {
         </div>
       </header>
 
-      <section className="relative py-12 bg-gray-50 border-b border-gray-100">
+      {/* ✅ FIX 2: padding top reducido en mobile, negative margin reducido en mobile */}
+      <section className="relative pt-4 pb-12 sm:py-12 bg-gray-50 border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-white p-6 sm:p-8 rounded-3xl shadow-xl -mt-20 relative z-10 border border-gray-100">
+          <div className="bg-white p-6 sm:p-8 rounded-3xl shadow-xl -mt-2 sm:-mt-20 relative z-10 border border-gray-100">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               <div className="space-y-2">
                 <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400 flex items-center gap-1">
@@ -1078,18 +1077,17 @@ export default function App() {
       </section>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        {/* Título principal centrado y elegante */}
-        
-        <div className="text-center mb-16">
-          <h2 className="text-4xl sm:text-5xl font-serif font-bold text-navy mb-4">
+        {/* ✅ FIX 3: espaciado reducido entre título y cards */}
+        <div className="text-center mb-8">
+          <h2 className="text-4xl sm:text-5xl font-serif font-bold text-navy mb-3">
             Propiedades Disponibles
           </h2>
           <p className="text-gray-500 text-lg max-w-2xl mx-auto font-light italic">
             Experiencia local, asesoramiento personalizado.
           </p>
-          <div className="w-24 h-0.5 bg-gold mx-auto mt-6"></div>
-          <p className="text-gray-400 max-w-xl text-center mx-auto mb-12">
-          Explorá nuestra selección exclusiva de propiedades en Mar del Plata. Encontrá el hogar que siempre soñaste con Plastina Propiedades.
+          <div className="w-24 h-0.5 bg-gold mx-auto mt-4 mb-4"></div>
+          <p className="text-gray-400 max-w-xl text-center mx-auto">
+            Explorá nuestra selección exclusiva de propiedades en Mar del Plata. Encontrá el hogar que siempre soñaste con Plastina Propiedades.
           </p>
         </div>
 
@@ -1130,10 +1128,8 @@ export default function App() {
       <footer className="bg-navy text-white pt-20 pb-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          {/* Grid corregido: 2 columnas en pantallas grandes */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
             
-            {/* Columna Izquierda: Logo + Texto + Redes */}
             <div className="space-y-6">
               <div className="flex items-center gap-4">
                 <a href="/" className="w-12 h-12 rounded-xl overflow-hidden shadow-lg hover:opacity-80 transition-opacity block flex-shrink-0">
@@ -1149,7 +1145,6 @@ export default function App() {
                 </div>
               </div>
               
-              {/* Texto con mayor ancho para que ocupe más espacio */}
               <p className="text-gray-400 leading-relaxed max-w-xl">
                 Florencia Plastina, Corredora Inmobiliaria (Reg. 3959).
                 Con más de 8 años de experiencia en Mar del Plata, ofrezco un servicio de asesoramiento inmobiliario cercano, transparente y personalizado. Acompaño a cada cliente en todo el proceso de compra, venta, alquiler y tasación de propiedades, brindando soluciones a medida y enfocadas en obtener los mejores resultados.
@@ -1177,7 +1172,6 @@ export default function App() {
               </div>
             </div>
 
-            {/* Columna Derecha: Contacto (alineado a la derecha en desktop) */}
             <div className="flex flex-col justify-center lg:items-end lg:text-right space-y-2">
               <h4 className="text-gold font-bold uppercase text-xs tracking-widest mb-4 lg:mb-6">Contacto</h4>
               <ul className="space-y-4 text-sm text-gray-400">
@@ -1197,26 +1191,24 @@ export default function App() {
             </div>
           </div>
 
-          {/* Barra inferior - Sin links, solo copyright y admin más visible */}
-            <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] font-bold uppercase tracking-widest text-gray-500">
-              <p>© 2026 Plastina Propiedades. Todos los derechos reservados.</p>
-              
-              {/* Botón Admin más visible */}
-              <button
-                onClick={() => setShowAdminPanel(true)}
-                className="flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 rounded-lg transition-all duration-300 group border border-white/10 hover:border-gold/30"
-                title="Acceso Admin"
-              >
-                <span className="text-gray-400 group-hover:text-gold transition-colors text-[10px] font-bold uppercase tracking-wider">
-                  Admin
-                </span>
-                <div className="flex flex-col gap-[2px]">
-                  <span className="block w-3 h-px bg-gray-400 transition-all duration-300 group-hover:w-4 group-hover:bg-gold" />
-                  <span className="block w-2.5 h-px bg-gray-400 transition-all duration-300 group-hover:w-3.5 group-hover:bg-gold" />
-                  <span className="block w-2 h-px bg-gray-400 transition-all duration-300 group-hover:w-3 group-hover:bg-gold" />
-                </div>
-              </button>
-            </div>
+          <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] font-bold uppercase tracking-widest text-gray-500">
+            <p>© 2026 Plastina Propiedades. Todos los derechos reservados.</p>
+            
+            <button
+              onClick={() => setShowAdminPanel(true)}
+              className="flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 rounded-lg transition-all duration-300 group border border-white/10 hover:border-gold/30"
+              title="Acceso Admin"
+            >
+              <span className="text-gray-400 group-hover:text-gold transition-colors text-[10px] font-bold uppercase tracking-wider">
+                Admin
+              </span>
+              <div className="flex flex-col gap-[2px]">
+                <span className="block w-3 h-px bg-gray-400 transition-all duration-300 group-hover:w-4 group-hover:bg-gold" />
+                <span className="block w-2.5 h-px bg-gray-400 transition-all duration-300 group-hover:w-3.5 group-hover:bg-gold" />
+                <span className="block w-2 h-px bg-gray-400 transition-all duration-300 group-hover:w-3 group-hover:bg-gold" />
+              </div>
+            </button>
+          </div>
         </div>
       </footer>
 
