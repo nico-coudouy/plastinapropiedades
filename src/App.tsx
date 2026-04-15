@@ -288,7 +288,7 @@ const PropertyModal = ({ property, onClose }: PropertyModalProps) => {
     return () => { document.body.style.overflow = 'unset'; };
   }, []);
 
-  const whatsappLink = `https://wa.me/5492235000000?text=Hola! Estoy interesado en la propiedad: ${property.title} (${property.id})`;
+  const whatsappLink = `https://wa.me/+5492234371111?text=Hola! Estoy interesado en la propiedad: ${property.title} (${property.id})`;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
