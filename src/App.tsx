@@ -470,6 +470,20 @@ export default function App() {
     localStorage.setItem('plastina_properties', JSON.stringify(newProperties));
   };
 
+  // Check if any filter is active
+  const hasActiveFilters = 
+    filterOperation !== 'Todos' || 
+    filterType !== 'Todos' || 
+    filterNeighborhood !== 'Todos' || 
+    filterBedrooms !== 'Todos';
+
+  const clearFilters = () => {
+    setFilterOperation('Todos');
+    setFilterType('Todos');
+    setFilterNeighborhood('Todos');
+    setFilterBedrooms('Todos');
+  };
+
   // Filtered Properties
   const filteredProperties = useMemo(() => {
     return properties.filter(p => {
@@ -970,7 +984,9 @@ export default function App() {
       <section className="relative py-12 bg-gray-50 border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-white p-6 sm:p-8 rounded-3xl shadow-xl -mt-20 relative z-10 border border-gray-100">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+            
+            {/* Filtros */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               <div className="space-y-2">
                 <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400 flex items-center gap-1">
                   <Filter size={10} /> Operación
@@ -1034,21 +1050,37 @@ export default function App() {
                   <option value="4+">4+ Dormitorios</option>
                 </select>
               </div>
-
-              <div className="flex items-end">
-                <button 
-                  onClick={() => {
-                    setFilterOperation('Todos');
-                    setFilterType('Todos');
-                    setFilterNeighborhood('Todos');
-                    setFilterBedrooms('Todos');
-                  }}
-                  className="w-full bg-navy hover:bg-navy/90 text-white font-bold py-3 rounded-xl transition-all shadow-lg flex items-center justify-center gap-2"
-                >
-                  <Search size={18} /> Buscar
-                </button>
-              </div>
             </div>
+
+            {/* ── Indicador de resultados + Limpiar filtros ── */}
+            <div className="mt-5 pt-4 border-t border-gray-100 flex items-center justify-between">
+              
+              {/* Indicador */}
+              <div className="flex items-center gap-2 text-sm text-gray-500">
+                <div className="w-2 h-2 rounded-full bg-gold animate-pulse" />
+                <span>
+                  <span className="font-bold text-navy">{filteredProperties.length}</span>
+                  {' '}propiedad{filteredProperties.length !== 1 ? 'es' : ''} encontrada{filteredProperties.length !== 1 ? 's' : ''}
+                </span>
+              </div>
+
+              {/* Botón Limpiar filtros — solo visible cuando hay filtros activos */}
+              <AnimatePresence>
+                {hasActiveFilters && (
+                  <motion.button
+                    initial={{ opacity: 0, scale: 0.9, x: 10 }}
+                    animate={{ opacity: 1, scale: 1, x: 0 }}
+                    exit={{ opacity: 0, scale: 0.9, x: 10 }}
+                    transition={{ duration: 0.15 }}
+                    onClick={clearFilters}
+                    className="flex items-center gap-1.5 text-xs font-bold text-gray-400 hover:text-red-500 transition-colors border border-gray-200 hover:border-red-200 hover:bg-red-50 px-3 py-1.5 rounded-lg"
+                  >
+                    <X size={13} /> Limpiar filtros
+                  </motion.button>
+                )}
+              </AnimatePresence>
+            </div>
+
           </div>
         </div>
       </section>
@@ -1061,9 +1093,6 @@ export default function App() {
             <p className="text-gray-400 max-w-xl">
               Explorá nuestra selección exclusiva de propiedades en Mar del Plata. Encontrá el hogar que siempre soñaste con Plastina Propiedades.
             </p>
-          </div>
-          <div className="text-sm font-bold text-navy bg-gray-50 px-4 py-2 rounded-full border border-gray-100">
-            {filteredProperties.length} Propiedades encontradas
           </div>
         </div>
 
@@ -1087,12 +1116,7 @@ export default function App() {
             <h3 className="text-xl font-bold text-navy mb-2">No encontramos resultados</h3>
             <p className="text-gray-400">Probá cambiando los filtros de búsqueda, che.</p>
             <button 
-              onClick={() => {
-                setFilterOperation('Todos');
-                setFilterType('Todos');
-                setFilterNeighborhood('Todos');
-                setFilterBedrooms('Todos');
-              }}
+              onClick={clearFilters}
               className="mt-6 text-gold font-bold uppercase tracking-widest text-xs hover:underline"
             >
               Limpiar filtros
