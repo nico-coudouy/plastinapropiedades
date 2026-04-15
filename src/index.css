@@ -29,7 +29,7 @@
 @layer base {
   body {
     @apply font-sans;
-    background-color: #ebe4f5;
+    background-color: #d6b8ff;
     color: var(--color-carbon);
   }
 
