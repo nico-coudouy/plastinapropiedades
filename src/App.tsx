@@ -956,9 +956,13 @@ export default function App() {
       <header className="bg-white border-b border-gray-100 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-24 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-navy rounded-xl flex items-center justify-center text-gold shadow-lg">
-              <Building2 size={28} />
-            </div>
+            <a href="/" className="w-12 h-12 rounded-xl overflow-hidden shadow-lg hover:opacity-80 transition-opacity block">
+              <img 
+                src="/logo.png" 
+                alt="Plastina Propiedades"
+                className="w-full h-full object-cover"
+              />
+            </a>
             <div>
               <h1 className="text-2xl font-serif font-bold text-navy leading-none">Plastina</h1>
               <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-gold">Propiedades</p>
@@ -1124,9 +1128,13 @@ export default function App() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
             <div className="col-span-1 md:col-span-2">
               <div className="flex items-center gap-4 mb-6">
-                <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-navy shadow-lg">
-                  <Building2 size={28} />
-                </div>
+                <a href="/" className="w-12 h-12 rounded-xl overflow-hidden shadow-lg hover:opacity-80 transition-opacity block">
+                  <img 
+                    src="/logo.png" 
+                    alt="Plastina Propiedades"
+                    className="w-full h-full object-cover"
+                  />
+                </a>
                 <div>
                   <h1 className="text-2xl font-serif font-bold text-white leading-none">Plastina</h1>
                   <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-gold">Propiedades</p>
