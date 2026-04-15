@@ -1,47 +1,128 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Cormorant+Garamond:wght@400;500;600&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
   --font-serif: "Cormorant Garamond", serif;
-  
-  --color-navy: #1a2744;
-  --color-gold: #c9a84c;
-  --color-gold-light: #e0c57a;
+
+  /* ── Paleta Plastina ── */
+  --color-lila-claro:    #D4BAE8;   /* fondo suave, hover states */
+  --color-lila-medio:    #B896D4;   /* bordes, acentos secundarios */
+  --color-lila-oscuro:   #7B4FA6;   /* links, badges, iconos */
+  --color-purpura:       #4A2B6B;   /* primario — botones, navbar activo */
+  --color-purpura-deep:  #2E1848;   /* hover de botones primarios */
+
+  /* ── Neutros ── */
+  --color-carbon:        #1C1C1E;   /* texto principal */
+  --color-gris-suave:    #F5F2F8;   /* fondos de sección alternados */
+  --color-gris-medio:    #E8E0F0;   /* bordes, divisores */
+  --color-gris-texto:    #6B6675;   /* texto secundario/muted */
+
+  /* ── Acento dorado (herencia, uso muy puntual) ── */
+  --color-oro:           #C9A96E;   /* precio, badges premium */
+
+  /* ── Semánticos ── */
+  --color-success:       #2D7A4F;
+  --color-error:         #A33232;
 }
 
 @layer base {
   body {
     @apply font-sans text-gray-900 bg-white;
+    color: var(--color-carbon);
   }
-  
+
   h1, h2, h3, h4, h5, h6 {
     @apply font-serif;
+    color: var(--color-carbon);
   }
+
+  /* Scrollbar temática */
+  ::-webkit-scrollbar        { width: 6px; }
+  ::-webkit-scrollbar-track  { background: var(--color-gris-suave); }
+  ::-webkit-scrollbar-thumb  { background: var(--color-lila-medio); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--color-purpura); }
 }
 
+/* ── Cards de propiedad ── */
 .property-card-shadow {
-  box-shadow: 0 10px 30px -15px rgba(26, 39, 68, 0.2);
+  box-shadow: 0 10px 30px -15px rgba(74, 43, 107, 0.18);
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
 }
-
 .property-card-shadow:hover {
-  box-shadow: 0 20px 40px -20px rgba(26, 39, 68, 0.3);
+  box-shadow: 0 20px 48px -16px rgba(74, 43, 107, 0.28);
+  transform: translateY(-3px);
 }
 
-/* Custom scrollbar for better aesthetic */
-::-webkit-scrollbar {
-  width: 8px;
+/* ── Botones ── */
+.btn-primary {
+  background-color: var(--color-purpura);
+  color: #fff;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.75rem 1.75rem;
+  border-radius: 2px;
+  transition: background-color 0.2s ease;
+}
+.btn-primary:hover  { background-color: var(--color-purpura-deep); }
+.btn-primary:active { transform: scale(0.98); }
+
+.btn-outline {
+  border: 1px solid var(--color-lila-medio);
+  color: var(--color-purpura);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.75rem 1.75rem;
+  border-radius: 2px;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+.btn-outline:hover { background-color: var(--color-gris-suave); border-color: var(--color-purpura); }
+
+/* ── Badge / Tag ── */
+.badge-premium {
+  background-color: var(--color-oro);
+  color: #fff;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 1px;
+}
+.badge-lila {
+  background-color: var(--color-lila-claro);
+  color: var(--color-purpura);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 1px;
 }
 
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
+/* ── Secciones alternadas ── */
+.section-tinted { background-color: var(--color-gris-suave); }
+
+/* ── Input / Select ── */
+.input-plastina {
+  border: 1px solid var(--color-gris-medio);
+  border-radius: 2px;
+  padding: 0.625rem 1rem;
+  font-size: 0.875rem;
+  color: var(--color-carbon);
+  transition: border-color 0.2s ease;
+}
+.input-plastina:focus {
+  outline: none;
+  border-color: var(--color-lila-oscuro);
+  box-shadow: 0 0 0 3px rgba(123, 79, 166, 0.12);
 }
 
-::-webkit-scrollbar-thumb {
-  background: #1a2744;
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #c9a84c;
+/* ── Navbar activo ── */
+.nav-link-active {
+  color: var(--color-lila-oscuro);
+  border-bottom: 2px solid var(--color-lila-oscuro);
+  padding-bottom: 2px;
 }
