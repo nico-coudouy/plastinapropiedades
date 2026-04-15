@@ -2,7 +2,8 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { 
   Search, MapPin, Bed, Bath, Maximize, Phone, Plus, Edit2, Trash2, 
   LogOut, ChevronLeft, ChevronRight, X, Check, Star, LayoutDashboard, 
-  Building2, Home, Store, LandPlot, Car, Filter, Menu, Instagram, Facebook 
+  Building2, Home, Store, LandPlot, Car, Filter, Menu, Instagram, Facebook,
+  Upload, Image as ImageIcon, Loader2
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { supabase } from './lib/supabase';
@@ -342,6 +343,9 @@ export default function App() {
   // Admin State
   const [editingProperty, setEditingProperty] = useState<Property | null>(null);
   const [showForm, setShowForm] = useState(false);
+  const [uploadingImages, setUploadingImages] = useState(false);
+  const [uploadedPhotos, setUploadedPhotos] = useState<string[]>([]);
+  const [photoUrlsText, setPhotoUrlsText] = useState('');
 
   // Auth Listener
   useEffect(() => {
@@ -406,7 +410,7 @@ export default function App() {
     if (error) alert('Credenciales incorrectas: ' + error.message);
     else {
       setPassword('');
-      setShowAdminPanel(false); // Volver a vista pública tras login exitoso
+      setShowAdminPanel(false);
     }
   };
 
@@ -421,6 +425,43 @@ export default function App() {
     const { error } = await supabase.from('properties').delete().eq('id', id);
     if (error) alert('Error al eliminar: ' + error.message);
     else setProperties(prev => prev.filter(p => p.id !== id));
+  };
+
+  // Image Upload Handler
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    setUploadingImages(true);
+    const newPhotoUrls: string[] = [];
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Math.random().toString(36).substring(2)}.${fileExt}`;
+      const filePath = `${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('properties')
+        .upload(filePath, file, {
+          cacheControl: '3600',
+          upsert: false
+        });
+
+      if (uploadError) {
+        alert('Error al subir imagen: ' + uploadError.message);
+      } else {
+        const { data } = supabase.storage
+          .from('properties')
+          .getPublicUrl(filePath);
+        
+        newPhotoUrls.push(data.publicUrl);
+      }
+    }
+
+    setUploadedPhotos(prev => [...prev, ...newPhotoUrls]);
+    setPhotoUrlsText(prev => prev + (prev ? '\n' : '') + newPhotoUrls.join('\n'));
+    setUploadingImages(false);
   };
 
   const handleSaveProperty = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -446,7 +487,7 @@ export default function App() {
       orientation: (formData.get('orientation') as Orientation) || null,
       age: Number(formData.get('age')) || null,
       extras: EXTRAS_OPTIONS.filter(opt => formData.get(`extra-${opt}`) === 'on'),
-      photos: (formData.get('photos') as string).split('\n').filter(u => u.trim()),
+      photos: uploadedPhotos.length > 0 ? uploadedPhotos : (formData.get('photos') as string).split('\n').filter(u => u.trim()),
       status: formData.get('status') as PropertyStatus,
       is_featured: formData.get('isFeatured') === 'on',
     };
@@ -463,6 +504,8 @@ export default function App() {
     } else {
       setShowForm(false);
       setEditingProperty(null);
+      setUploadedPhotos([]);
+      setPhotoUrlsText('');
       loadProperties();
     }
   };
@@ -478,6 +521,14 @@ export default function App() {
   const updateStatus = async (id: string, status: PropertyStatus) => {
     await supabase.from('properties').update({ status }).eq('id', id);
     setProperties(prev => prev.map(p => p.id === id ? { ...p, status } : p));
+  };
+
+  // Open form handler
+  const openForm = (property: Property | null = null) => {
+    setEditingProperty(property);
+    setUploadedPhotos(property?.photos || []);
+    setPhotoUrlsText(property?.photos.join('\n') || '');
+    setShowForm(true);
   };
 
   // --- Views ---
@@ -546,7 +597,7 @@ export default function App() {
             </div>
             <div className="flex items-center gap-4">
               <button 
-                onClick={() => { setEditingProperty(null); setShowForm(true); }}
+                onClick={() => openForm(null)}
                 className="bg-[#4A2B6B] hover:bg-[#2E1848] text-white px-4 py-2 rounded-lg flex items-center gap-2 text-sm font-bold transition-all shadow-md"
               >
                 <Plus size={18} /> <span className="hidden sm:inline">Nueva Propiedad</span>
@@ -644,7 +695,7 @@ export default function App() {
                       <td className="px-6 py-4 text-right">
                         <div className="flex items-center justify-end gap-2">
                           <button 
-                            onClick={() => { setEditingProperty(p); setShowForm(true); }}
+                            onClick={() => openForm(p)}
                             className="p-2 text-gray-400 hover:text-navy transition-colors"
                           >
                             <Edit2 size={18} />
@@ -809,14 +860,67 @@ export default function App() {
                     </div>
 
                     <div className="space-y-4">
-                      <h3 className="text-xs font-bold uppercase tracking-widest text-gold border-b border-gold/20 pb-1">Fotos (URLs)</h3>
-                      <p className="text-[10px] text-gray-400">Pegá una URL por línea. La primera será la portada.</p>
-                      <textarea 
-                        name="photos" 
-                        defaultValue={editingProperty?.photos.join('\n')} 
-                        placeholder="https://ejemplo.com/foto1.jpg&#10;https://ejemplo.com/foto2.jpg"
-                        className="w-full px-4 py-2 rounded-lg border border-gray-200 outline-none focus:ring-2 focus:ring-gold h-48 font-mono text-xs" 
-                      />
+                      <h3 className="text-xs font-bold uppercase tracking-widest text-gold border-b border-gold/20 pb-1">Fotos</h3>
+                      
+                      {/* Upload Button */}
+                      <div className="mb-4">
+                        <label className="block text-[10px] font-bold uppercase text-gray-400 mb-2">Subir imágenes desde tu dispositivo</label>
+                        <div className="flex items-center gap-4">
+                          <label className="flex-1 cursor-pointer bg-[#4A2B6B] hover:bg-[#2E1848] text-white px-4 py-3 rounded-lg flex items-center justify-center gap-2 transition-all">
+                            {uploadingImages ? (
+                              <>
+                                <Loader2 className="animate-spin" size={18} />
+                                Subiendo...
+                              </>
+                            ) : (
+                              <>
+                                <Upload size={18} />
+                                Seleccionar imágenes
+                              </>
+                            )}
+                            <input 
+                              type="file" 
+                              accept="image/*" 
+                              multiple 
+                              onChange={handleImageUpload}
+                              disabled={uploadingImages}
+                              className="hidden"
+                            />
+                          </label>
+                        </div>
+                        <p className="text-[10px] text-gray-400 mt-2">Podés seleccionar múltiples imágenes a la vez (JPG, PNG)</p>
+                      </div>
+
+                      {/* Preview uploaded images */}
+                      {uploadedPhotos.length > 0 && (
+                        <div className="mb-4">
+                          <label className="block text-[10px] font-bold uppercase text-gray-400 mb-2">Imágenes subidas ({uploadedPhotos.length})</label>
+                          <div className="grid grid-cols-3 gap-2">
+                            {uploadedPhotos.map((photo, idx) => (
+                              <div key={idx} className="relative aspect-square rounded-lg overflow-hidden border-2 border-gray-200">
+                                <img src={photo} alt={`Preview ${idx}`} className="w-full h-full object-cover" />
+                                {idx === 0 && (
+                                  <span className="absolute top-1 left-1 bg-gold text-white text-[8px] font-bold px-1.5 py-0.5 rounded">
+                                    PORTADA
+                                  </span>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Manual URLs (fallback) */}
+                      <div>
+                        <label className="block text-[10px] font-bold uppercase text-gray-400 mb-1">O pegá URLs manualmente</label>
+                        <textarea 
+                          name="photos" 
+                          value={photoUrlsText}
+                          onChange={(e) => setPhotoUrlsText(e.target.value)}
+                          placeholder="https://ejemplo.com/foto1.jpg&#10;https://ejemplo.com/foto2.jpg"
+                          className="w-full px-4 py-2 rounded-lg border border-gray-200 outline-none focus:ring-2 focus:ring-gold h-32 font-mono text-xs" 
+                        />
+                      </div>
                     </div>
                   </div>
 
