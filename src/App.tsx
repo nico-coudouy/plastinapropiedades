@@ -1125,10 +1125,14 @@ export default function App() {
 
       <footer className="bg-navy text-white pt-20 pb-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
-            <div className="col-span-1 md:col-span-2">
-              <div className="flex items-center gap-4 mb-6">
-                <a href="/" className="w-12 h-12 rounded-xl overflow-hidden shadow-lg hover:opacity-80 transition-opacity block">
+          
+          {/* Grid corregido: 2 columnas en pantallas grandes */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
+            
+            {/* Columna Izquierda: Logo + Texto + Redes */}
+            <div className="space-y-6">
+              <div className="flex items-center gap-4">
+                <a href="/" className="w-12 h-12 rounded-xl overflow-hidden shadow-lg hover:opacity-80 transition-opacity block flex-shrink-0">
                   <img 
                     src="/logo.png" 
                     alt="Plastina Propiedades"
@@ -1140,11 +1144,14 @@ export default function App() {
                   <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-gold">Propiedades</p>
                 </div>
               </div>
-              <p className="text-gray-400 max-w-sm leading-relaxed mb-8">
+              
+              {/* Texto con mayor ancho para que ocupe más espacio */}
+              <p className="text-gray-400 leading-relaxed max-w-xl">
                 Florencia Plastina, Corredora Inmobiliaria (Reg. 3959).
                 Con más de 8 años de experiencia en Mar del Plata, ofrezco un servicio de asesoramiento inmobiliario cercano, transparente y personalizado. Acompaño a cada cliente en todo el proceso de compra, venta, alquiler y tasación de propiedades, brindando soluciones a medida y enfocadas en obtener los mejores resultados.
               </p>
-              <div className="flex gap-4">
+              
+              <div className="flex gap-4 pt-2">
                 <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-gold transition-colors">
                   <Instagram size={20} />
                 </a>
@@ -1154,38 +1161,37 @@ export default function App() {
               </div>
             </div>
 
-            {/* Eliminamos la columna de Navegación del footer también */}
-            
-            <div>
-              <h4 className="text-gold font-bold uppercase text-xs tracking-widest mb-6">Contacto</h4>
+            {/* Columna Derecha: Contacto (alineado a la derecha en desktop) */}
+            <div className="flex flex-col justify-center lg:items-end lg:text-right space-y-2">
+              <h4 className="text-gold font-bold uppercase text-xs tracking-widest mb-4 lg:mb-6">Contacto</h4>
               <ul className="space-y-4 text-sm text-gray-400">
-                <li className="flex items-center gap-3">
-                  <MapPin size={16} className="text-gold" />
-                  Falucho 2300, Mar del Plata
+                <li className="flex items-center gap-3 lg:justify-end">
+                  <MapPin size={16} className="text-gold flex-shrink-0" />
+                  <span>Falucho 2300, Mar del Plata</span>
                 </li>
-                <li className="flex items-center gap-3">
-                  <Phone size={16} className="text-gold" />
-                  +54 9 2234371111
+                <li className="flex items-center gap-3 lg:justify-end">
+                  <Phone size={16} className="text-gold flex-shrink-0" />
+                  <span>+54 9 2234371111</span>
                 </li>
-                <li className="flex items-center gap-3">
-                  <X size={16} className="text-gold" />
-                  info@plastina.com.ar
+                <li className="flex items-center gap-3 lg:justify-end">
+                  <X size={16} className="text-gold flex-shrink-0" />
+                  <span>info@plastina.com.ar</span>
                 </li>
               </ul>
             </div>
           </div>
 
-          <div className="border-t border-white/5 pt-10 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] font-bold uppercase tracking-widest text-gray-500">
+          {/* Barra inferior */}
+          <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] font-bold uppercase tracking-widest text-gray-500">
             <p>© 2026 Plastina Propiedades. Todos los derechos reservados.</p>
             <div className="flex items-center gap-6">
               <a href="#" className="hover:text-white transition-colors">Términos y Condiciones</a>
               <a href="#" className="hover:text-white transition-colors">Privacidad</a>
               
+              {/* Botón Admin Discreto */}
               <button
                 onClick={() => setShowAdminPanel(true)}
                 className="flex flex-col gap-[3px] opacity-20 hover:opacity-50 transition-opacity duration-300 p-1 group"
-                title=""
-                aria-label=""
               >
                 <span className="block w-3.5 h-px bg-gray-400 transition-all duration-300 group-hover:w-3.5" />
                 <span className="block w-2.5 h-px bg-gray-400 transition-all duration-300 group-hover:w-3.5" />
@@ -1193,6 +1199,7 @@ export default function App() {
               </button>
             </div>
           </div>
+          
         </div>
       </footer>
 
