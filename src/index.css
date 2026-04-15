@@ -191,8 +191,8 @@ nav {
    SECCIÓN PROPIEDADES
 ══════════════════════════════════ */
 .section-propiedades {
-  background: var(--color-gris-suave);   /* fondo lila muy suave */
-  padding: 4rem 2rem;
+  background: var(--color-gris-suave);
+  padding: 3rem 2rem 4rem;  /* antes era 4rem arriba */
 }
 
 .section-title {
