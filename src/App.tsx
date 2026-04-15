@@ -1,32 +1,12 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { 
-  Search, 
-  MapPin, 
-  Bed, 
-  Bath, 
-  Maximize, 
-  Phone, 
-  Plus, 
-  Edit2, 
-  Trash2, 
-  LogOut, 
-  ChevronLeft, 
-  ChevronRight, 
-  X, 
-  Check, 
-  Star, 
-  LayoutDashboard, 
-  Building2, 
-  Home, 
-  Store, 
-  LandPlot, 
-  Car,
-  Filter,
-  Menu,
-  Instagram,
-  Facebook
+  Search, MapPin, Bed, Bath, Maximize, Phone, Plus, Edit2, Trash2, 
+  LogOut, ChevronLeft, ChevronRight, X, Check, Star, LayoutDashboard, 
+  Building2, Home, Store, LandPlot, Car, Filter, Menu, Instagram, Facebook 
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { supabase } from './lib/supabase';
+import type { Session } from '@supabase/supabase-js';
 
 // --- Types ---
 
@@ -46,8 +26,8 @@ interface Property {
   currency: Currency;
   address: string;
   neighborhood: string;
-  coveredArea: number;
-  totalArea: number;
+  covered_area: number;
+  total_area: number;
   rooms: number;
   bedrooms: number;
   bathrooms: number;
@@ -58,8 +38,8 @@ interface Property {
   extras: string[];
   photos: string[];
   status: PropertyStatus;
-  isFeatured: boolean;
-  createdAt: number;
+  is_featured: boolean;
+  created_at: string;
 }
 
 // --- Constants ---
@@ -70,91 +50,6 @@ const EXTRAS_OPTIONS = [
 
 const NEIGHBORHOODS = [
   'Plaza Mitre', 'Los Troncos', 'Chauvín', 'La Perla', 'Playa Grande', 'Güemes', 'Constitución', 'Punta Mogotes', 'Sierra de los Padres'
-];
-
-const INITIAL_PROPERTIES: Property[] = [
-  {
-    id: '1',
-    title: 'Departamento 2 ambientes con vista al mar',
-    description: 'Excelente departamento de 2 ambientes ubicado en el corazón de Plaza Mitre. Cuenta con amplio living comedor, cocina integrada, dormitorio con placard y baño completo. Muy luminoso y en impecable estado.',
-    operation: 'Venta',
-    type: 'Departamento',
-    price: 85000,
-    currency: 'USD',
-    address: 'Falucho 2300',
-    neighborhood: 'Plaza Mitre',
-    coveredArea: 45,
-    totalArea: 48,
-    rooms: 2,
-    bedrooms: 1,
-    bathrooms: 1,
-    garages: 0,
-    floor: '8',
-    orientation: 'E',
-    age: 15,
-    extras: ['Balcón', 'Apto profesional'],
-    photos: [
-      'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&q=80&w=800',
-      'https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&q=80&w=800'
-    ],
-    status: 'Disponible',
-    isFeatured: true,
-    createdAt: Date.now() - 1000000
-  },
-  {
-    id: '2',
-    title: 'Imponente Casa en Los Troncos',
-    description: 'Residencia de categoría desarrollada en dos plantas sobre lote propio. Amplio jardín perimetral, quincho con parrilla y piscina climatizada. 4 dormitorios en suite, escritorio y dependencia de servicio.',
-    operation: 'Venta',
-    type: 'Casa',
-    price: 450000,
-    currency: 'USD',
-    address: 'Paso 1200',
-    neighborhood: 'Los Troncos',
-    coveredArea: 320,
-    totalArea: 600,
-    rooms: 6,
-    bedrooms: 4,
-    bathrooms: 5,
-    garages: 2,
-    orientation: 'N',
-    age: 10,
-    extras: ['Pileta', 'Parrilla', 'Jardín', 'Terraza', 'Seguridad 24hs'],
-    photos: [
-      'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=800',
-      'https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&q=80&w=800'
-    ],
-    status: 'Disponible',
-    isFeatured: true,
-    createdAt: Date.now() - 2000000
-  },
-  {
-    id: '3',
-    title: 'PH 3 ambientes reciclado a nuevo',
-    description: 'Hermoso PH sin expensas en el barrio de Chauvín. Reciclado totalmente a nuevo con materiales de primera calidad. Patio propio con parrilla. Muy bajas expensas.',
-    operation: 'Venta',
-    type: 'PH',
-    price: 115000,
-    currency: 'USD',
-    address: 'Matheu 2800',
-    neighborhood: 'Chauvín',
-    coveredArea: 75,
-    totalArea: 90,
-    rooms: 3,
-    bedrooms: 2,
-    bathrooms: 1,
-    garages: 0,
-    orientation: 'O',
-    age: 40,
-    extras: ['Parrilla', 'Jardín'],
-    photos: [
-      'https://images.unsplash.com/photo-1493809842364-78817add7ffb?auto=format&fit=crop&q=80&w=800',
-      'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&q=80&w=800'
-    ],
-    status: 'Disponible',
-    isFeatured: false,
-    createdAt: Date.now() - 3000000
-  }
 ];
 
 // --- Components ---
@@ -194,9 +89,8 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, onClick }) => {
           referrerPolicy="no-referrer"
         />
         
-        {/* Badges */}
         <div className="absolute top-4 left-4 flex flex-col gap-2">
-          {property.isFeatured && (
+          {property.is_featured && (
             <span className="bg-gold text-white text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded shadow-sm">
               Destacado
             </span>
@@ -214,7 +108,6 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, onClick }) => {
           </div>
         )}
 
-        {/* Photo Controls */}
         {property.photos.length > 1 && (
           <>
             <button 
@@ -267,7 +160,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, onClick }) => {
           </div>
           <div className="flex items-center gap-1.5">
             <Maximize size={16} className="text-navy/70" />
-            <span>{property.coveredArea} m²</span>
+            <span>{property.covered_area} m²</span>
           </div>
         </div>
       </div>
@@ -314,7 +207,6 @@ const PropertyModal = ({ property, onClose }: PropertyModalProps) => {
         </button>
 
         <div className="grid grid-cols-1 lg:grid-cols-2">
-          {/* Gallery */}
           <div className="p-6 lg:p-8 space-y-4">
             <div className="relative aspect-video rounded-xl overflow-hidden bg-gray-100">
               <img 
@@ -337,7 +229,6 @@ const PropertyModal = ({ property, onClose }: PropertyModalProps) => {
             </div>
           </div>
 
-          {/* Details */}
           <div className="p-6 lg:p-8 lg:border-l border-gray-100">
             <div className="flex flex-wrap gap-2 mb-4">
               <span className="bg-navy text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full">
@@ -346,7 +237,7 @@ const PropertyModal = ({ property, onClose }: PropertyModalProps) => {
               <span className="bg-gold text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full">
                 {property.type}
               </span>
-              {property.isFeatured && (
+              {property.is_featured && (
                 <span className="bg-gray-100 text-navy text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full flex items-center gap-1">
                   <Star size={10} fill="currentColor" /> Destacado
                 </span>
@@ -377,7 +268,7 @@ const PropertyModal = ({ property, onClose }: PropertyModalProps) => {
                 <div className="text-gray-400 text-[10px] uppercase font-bold">Baños</div>
               </div>
               <div className="bg-gray-50 p-3 rounded-xl text-center">
-                <div className="text-navy font-bold text-lg">{property.coveredArea}</div>
+                <div className="text-navy font-bold text-lg">{property.covered_area}</div>
                 <div className="text-gray-400 text-[10px] uppercase font-bold">m² Cub.</div>
               </div>
             </div>
@@ -385,15 +276,13 @@ const PropertyModal = ({ property, onClose }: PropertyModalProps) => {
             <div className="space-y-6">
               <div>
                 <h4 className="text-navy font-bold uppercase text-xs tracking-widest mb-3 border-b border-gray-100 pb-2">Descripción</h4>
-                <p className="text-gray-600 leading-relaxed text-sm">
-                  {property.description}
-                </p>
+                <p className="text-gray-600 leading-relaxed text-sm">{property.description}</p>
               </div>
 
               <div>
                 <h4 className="text-navy font-bold uppercase text-xs tracking-widest mb-3 border-b border-gray-100 pb-2">Características</h4>
                 <div className="grid grid-cols-2 gap-y-2 text-sm">
-                  <div className="flex justify-between pr-4"><span className="text-gray-400">Sup. Total:</span> <span className="font-medium">{property.totalArea} m²</span></div>
+                  <div className="flex justify-between pr-4"><span className="text-gray-400">Sup. Total:</span> <span className="font-medium">{property.total_area} m²</span></div>
                   <div className="flex justify-between pr-4"><span className="text-gray-400">Cocheras:</span> <span className="font-medium">{property.garages}</span></div>
                   {property.floor && <div className="flex justify-between pr-4"><span className="text-gray-400">Piso:</span> <span className="font-medium">{property.floor}</span></div>}
                   {property.orientation && <div className="flex justify-between pr-4"><span className="text-gray-400">Orientación:</span> <span className="font-medium">{property.orientation}</span></div>}
@@ -437,8 +326,9 @@ const PropertyModal = ({ property, onClose }: PropertyModalProps) => {
 
 export default function App() {
   const [properties, setProperties] = useState<Property[]>([]);
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [session, setSession] = useState<Session | null>(null);
+  const [showAdminPanel, setShowAdminPanel] = useState(false);
   const [password, setPassword] = useState('');
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
   
@@ -453,24 +343,34 @@ export default function App() {
   const [editingProperty, setEditingProperty] = useState<Property | null>(null);
   const [showForm, setShowForm] = useState(false);
 
-  // Load Data
+  // Auth Listener
   useEffect(() => {
-    const saved = localStorage.getItem('plastina_properties');
-    if (saved) {
-      setProperties(JSON.parse(saved));
-    } else {
-      setProperties(INITIAL_PROPERTIES);
-      localStorage.setItem('plastina_properties', JSON.stringify(INITIAL_PROPERTIES));
-    }
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+    return () => subscription.unsubscribe();
   }, []);
 
-  // Save Data
-  const saveProperties = (newProperties: Property[]) => {
-    setProperties(newProperties);
-    localStorage.setItem('plastina_properties', JSON.stringify(newProperties));
+  // Load Data
+  useEffect(() => {
+    loadProperties();
+  }, []);
+
+  const loadProperties = async () => {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from('properties')
+      .select('*')
+      .order('created_at', { ascending: false });
+    
+    if (error) console.error('Error cargando propiedades:', error);
+    else setProperties(data || []);
+    setLoading(false);
   };
 
-  // Check if any filter is active
   const hasActiveFilters = 
     filterOperation !== 'Todos' || 
     filterType !== 'Todos' || 
@@ -484,7 +384,6 @@ export default function App() {
     setFilterBedrooms('Todos');
   };
 
-  // Filtered Properties
   const filteredProperties = useMemo(() => {
     return properties.filter(p => {
       const opMatch = filterOperation === 'Todos' || p.operation === filterOperation;
@@ -493,39 +392,42 @@ export default function App() {
       const priceMatch = p.price >= filterPriceRange[0] && p.price <= filterPriceRange[1];
       const bedMatch = filterBedrooms === 'Todos' || 
                       (filterBedrooms === '4+' ? p.bedrooms >= 4 : p.bedrooms === parseInt(filterBedrooms));
-      
       return opMatch && typeMatch && neighborhoodMatch && priceMatch && bedMatch;
     });
   }, [properties, filterOperation, filterType, filterNeighborhood, filterPriceRange, filterBedrooms]);
 
-  // Admin Handlers
-  const handleLogin = (e: React.FormEvent) => {
+  // Auth Handlers
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (password === 'admin123') {
-      setIsLoggedIn(true);
+    const { error } = await supabase.auth.signInWithPassword({
+      email: 'admin@plastina.com.ar',
+      password
+    });
+    if (error) alert('Credenciales incorrectas: ' + error.message);
+    else {
       setPassword('');
-    } else {
-      alert('Contraseña incorrecta, che.');
+      setShowAdminPanel(false); // Volver a vista pública tras login exitoso
     }
   };
 
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    setIsAdmin(false);
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    setShowAdminPanel(false);
   };
 
-  const handleDelete = (id: string) => {
-    if (confirm('¿Estás seguro de que querés borrar esta propiedad?')) {
-      saveProperties(properties.filter(p => p.id !== id));
-    }
+  // CRUD Handlers
+  const handleDelete = async (id: string) => {
+    if (!confirm('¿Estás seguro de que querés borrar esta propiedad?')) return;
+    const { error } = await supabase.from('properties').delete().eq('id', id);
+    if (error) alert('Error al eliminar: ' + error.message);
+    else setProperties(prev => prev.filter(p => p.id !== id));
   };
 
-  const handleSaveProperty = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSaveProperty = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     
-    const newProperty: Property = {
-      id: editingProperty?.id || Math.random().toString(36).substr(2, 9),
+    const payload = {
       title: formData.get('title') as string,
       description: formData.get('description') as string,
       operation: formData.get('operation') as OperationType,
@@ -534,43 +436,53 @@ export default function App() {
       currency: formData.get('currency') as Currency,
       address: formData.get('address') as string,
       neighborhood: formData.get('neighborhood') as string,
-      coveredArea: Number(formData.get('coveredArea')),
-      totalArea: Number(formData.get('totalArea')),
+      covered_area: Number(formData.get('coveredArea')),
+      total_area: Number(formData.get('totalArea')),
       rooms: Number(formData.get('rooms')),
       bedrooms: Number(formData.get('bedrooms')),
       bathrooms: Number(formData.get('bathrooms')),
       garages: Number(formData.get('garages')),
-      floor: formData.get('floor') as string,
-      orientation: formData.get('orientation') as Orientation,
-      age: Number(formData.get('age')),
+      floor: (formData.get('floor') as string) || null,
+      orientation: (formData.get('orientation') as Orientation) || null,
+      age: Number(formData.get('age')) || null,
       extras: EXTRAS_OPTIONS.filter(opt => formData.get(`extra-${opt}`) === 'on'),
-      photos: (formData.get('photos') as string).split('\n').filter(url => url.trim() !== ''),
+      photos: (formData.get('photos') as string).split('\n').filter(u => u.trim()),
       status: formData.get('status') as PropertyStatus,
-      isFeatured: formData.get('isFeatured') === 'on',
-      createdAt: editingProperty?.createdAt || Date.now()
+      is_featured: formData.get('isFeatured') === 'on',
     };
 
+    let error;
     if (editingProperty) {
-      saveProperties(properties.map(p => p.id === editingProperty.id ? newProperty : p));
+      ({ error } = await supabase.from('properties').update(payload).eq('id', editingProperty.id));
     } else {
-      saveProperties([...properties, newProperty]);
+      ({ error } = await supabase.from('properties').insert(payload));
     }
 
-    setShowForm(false);
-    setEditingProperty(null);
+    if (error) {
+      alert('Error al guardar: ' + error.message);
+    } else {
+      setShowForm(false);
+      setEditingProperty(null);
+      loadProperties();
+    }
   };
 
-  const toggleFeatured = (id: string) => {
-    saveProperties(properties.map(p => p.id === id ? { ...p, isFeatured: !p.isFeatured } : p));
+  const toggleFeatured = async (id: string) => {
+    const prop = properties.find(p => p.id === id);
+    if (!prop) return;
+    const newVal = !prop.is_featured;
+    await supabase.from('properties').update({ is_featured: newVal }).eq('id', id);
+    setProperties(prev => prev.map(p => p.id === id ? { ...p, is_featured: newVal } : p));
   };
 
-  const updateStatus = (id: string, status: PropertyStatus) => {
-    saveProperties(properties.map(p => p.id === id ? { ...p, status } : p));
+  const updateStatus = async (id: string, status: PropertyStatus) => {
+    await supabase.from('properties').update({ status }).eq('id', id);
+    setProperties(prev => prev.map(p => p.id === id ? { ...p, status } : p));
   };
 
   // --- Views ---
 
-  if (isAdmin && !isLoggedIn) {
+  if (!session && showAdminPanel) {
     return (
       <div className="min-h-screen bg-navy flex items-center justify-center p-4">
         <motion.div 
@@ -606,7 +518,7 @@ export default function App() {
             </button>
             <button 
               type="button"
-              onClick={() => setIsAdmin(false)}
+              onClick={() => setShowAdminPanel(false)}
               className="w-full text-[#B896D4] text-sm hover:text-[#4A2B6B] transition-colors"
             >
               Volver al sitio público
@@ -617,7 +529,7 @@ export default function App() {
     );
   }
 
-  if (isAdmin && isLoggedIn) {
+  if (session) {
     const stats = {
       total: properties.length,
       venta: properties.filter(p => p.operation === 'Venta').length,
@@ -626,7 +538,6 @@ export default function App() {
 
     return (
       <div className="min-h-screen bg-gray-50">
-        {/* Admin Header */}
         <header className="bg-white border-b border-[#E8E0F0] sticky top-0 z-30">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -652,7 +563,6 @@ export default function App() {
         </header>
 
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {/* Stats */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
             <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4">
               <div className="w-12 h-12 bg-navy/5 rounded-xl flex items-center justify-center text-navy">
@@ -683,7 +593,6 @@ export default function App() {
             </div>
           </div>
 
-          {/* List */}
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-left">
@@ -727,9 +636,9 @@ export default function App() {
                       <td className="px-6 py-4 text-center">
                         <button 
                           onClick={() => toggleFeatured(p.id)}
-                          className={`p-2 rounded-full transition-colors ${p.isFeatured ? 'text-gold bg-gold/10' : 'text-gray-300 hover:text-gold'}`}
+                          className={`p-2 rounded-full transition-colors ${p.is_featured ? 'text-gold bg-gold/10' : 'text-gray-300 hover:text-gold'}`}
                         >
-                          <Star size={20} fill={p.isFeatured ? 'currentColor' : 'none'} />
+                          <Star size={20} fill={p.is_featured ? 'currentColor' : 'none'} />
                         </button>
                       </td>
                       <td className="px-6 py-4 text-right">
@@ -756,7 +665,6 @@ export default function App() {
           </div>
         </main>
 
-        {/* Form Modal */}
         <AnimatePresence>
           {showForm && (
             <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -784,7 +692,6 @@ export default function App() {
 
                 <form onSubmit={handleSaveProperty} className="space-y-8">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {/* Basic Info */}
                     <div className="space-y-4">
                       <h3 className="text-xs font-bold uppercase tracking-widest text-gold border-b border-gold/20 pb-1">Información Básica</h3>
                       <div>
@@ -830,7 +737,6 @@ export default function App() {
                       </div>
                     </div>
 
-                    {/* Location & Specs */}
                     <div className="space-y-4">
                       <h3 className="text-xs font-bold uppercase tracking-widest text-gold border-b border-gold/20 pb-1">Ubicación y Medidas</h3>
                       <div>
@@ -846,11 +752,11 @@ export default function App() {
                       <div className="grid grid-cols-2 gap-4">
                         <div>
                           <label className="block text-[10px] font-bold uppercase text-gray-400 mb-1">Sup. Cubierta (m²)</label>
-                          <input type="number" name="coveredArea" defaultValue={editingProperty?.coveredArea} className="w-full px-4 py-2 rounded-lg border border-gray-200 outline-none focus:ring-2 focus:ring-gold" required />
+                          <input type="number" name="coveredArea" defaultValue={editingProperty?.covered_area} className="w-full px-4 py-2 rounded-lg border border-gray-200 outline-none focus:ring-2 focus:ring-gold" required />
                         </div>
                         <div>
                           <label className="block text-[10px] font-bold uppercase text-gray-400 mb-1">Sup. Total (m²)</label>
-                          <input type="number" name="totalArea" defaultValue={editingProperty?.totalArea} className="w-full px-4 py-2 rounded-lg border border-gray-200 outline-none focus:ring-2 focus:ring-gold" required />
+                          <input type="number" name="totalArea" defaultValue={editingProperty?.total_area} className="w-full px-4 py-2 rounded-lg border border-gray-200 outline-none focus:ring-2 focus:ring-gold" required />
                         </div>
                       </div>
                       <div className="grid grid-cols-4 gap-2">
@@ -874,7 +780,6 @@ export default function App() {
                     </div>
                   </div>
 
-                  {/* Extras & Photos */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-4">
                       <h3 className="text-xs font-bold uppercase tracking-widest text-gold border-b border-gold/20 pb-1">Extras y Estado</h3>
@@ -888,7 +793,7 @@ export default function App() {
                       </div>
                       <div className="pt-4 space-y-4">
                         <label className="flex items-center gap-2 text-sm font-bold text-navy cursor-pointer">
-                          <input type="checkbox" name="isFeatured" defaultChecked={editingProperty?.isFeatured} className="w-5 h-5 rounded text-gold focus:ring-gold" />
+                          <input type="checkbox" name="isFeatured" defaultChecked={editingProperty?.is_featured} className="w-5 h-5 rounded text-gold focus:ring-gold" />
                           Marcar como Destacado
                         </label>
                         <div>
@@ -942,7 +847,6 @@ export default function App() {
   // --- Public View ---
   return (
     <div className="min-h-screen bg-white">
-      {/* Header */}
       <header className="bg-white border-b border-gray-100 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-24 flex items-center justify-between">
           <div className="flex items-center gap-4">
@@ -973,12 +877,9 @@ export default function App() {
         </div>
       </header>
 
-      {/* Hero / Filter Bar */}
       <section className="relative py-12 bg-gray-50 border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-white p-6 sm:p-8 rounded-3xl shadow-xl -mt-20 relative z-10 border border-gray-100">
-            
-            {/* Filtros */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               <div className="space-y-2">
                 <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400 flex items-center gap-1">
@@ -1045,10 +946,7 @@ export default function App() {
               </div>
             </div>
 
-            {/* ── Indicador de resultados + Limpiar filtros ── */}
             <div className="mt-5 pt-4 border-t border-gray-100 flex items-center justify-between">
-              
-              {/* Indicador */}
               <div className="flex items-center gap-2 text-sm text-gray-500">
                 <div className="w-2 h-2 rounded-full bg-gold animate-pulse" />
                 <span>
@@ -1057,7 +955,6 @@ export default function App() {
                 </span>
               </div>
 
-              {/* Botón Limpiar filtros — solo visible cuando hay filtros activos */}
               <AnimatePresence>
                 {hasActiveFilters && (
                   <motion.button
@@ -1073,12 +970,10 @@ export default function App() {
                 )}
               </AnimatePresence>
             </div>
-
           </div>
         </div>
       </section>
 
-      {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
           <div>
@@ -1089,7 +984,12 @@ export default function App() {
           </div>
         </div>
 
-        {filteredProperties.length > 0 ? (
+        {loading ? (
+          <div className="text-center py-20">
+            <div className="inline-block w-8 h-8 border-4 border-gold border-t-transparent rounded-full animate-spin" />
+            <p className="mt-4 text-gray-400">Cargando propiedades...</p>
+          </div>
+        ) : filteredProperties.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10">
             <AnimatePresence mode="popLayout">
               {filteredProperties.map(p => (
@@ -1118,7 +1018,6 @@ export default function App() {
         )}
       </main>
 
-      {/* Footer */}
       <footer className="bg-navy text-white pt-20 pb-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
@@ -1180,9 +1079,8 @@ export default function App() {
               <a href="#" className="hover:text-white transition-colors">Términos y Condiciones</a>
               <a href="#" className="hover:text-white transition-colors">Privacidad</a>
               
-              {/* Admin trigger — discreto */}
               <button
-                onClick={() => setIsAdmin(true)}
+                onClick={() => setShowAdminPanel(true)}
                 className="flex flex-col gap-[3px] opacity-20 hover:opacity-50 transition-opacity duration-300 p-1 group"
                 title=""
                 aria-label=""
@@ -1196,7 +1094,6 @@ export default function App() {
         </div>
       </footer>
 
-      {/* Modals */}
       <AnimatePresence>
         {selectedProperty && (
           <PropertyModal 
