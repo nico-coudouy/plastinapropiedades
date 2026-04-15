@@ -969,13 +969,6 @@ export default function App() {
             >
               Contactanos
             </a>
-            <button 
-              onClick={() => setIsAdmin(true)}
-              className="p-2 text-gray-300 hover:text-navy transition-colors"
-              title="Admin"
-            >
-              <Menu size={24} />
-            </button>
           </div>
         </div>
       </header>
@@ -1182,10 +1175,22 @@ export default function App() {
           </div>
 
           <div className="border-t border-white/5 pt-10 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] font-bold uppercase tracking-widest text-gray-500">
-            <p>© 2024 Plastina Propiedades. Todos los derechos reservados.</p>
-            <div className="flex gap-6">
+            <p>© 2026 Plastina Propiedades. Todos los derechos reservados.</p>
+            <div className="flex items-center gap-6">
               <a href="#" className="hover:text-white transition-colors">Términos y Condiciones</a>
               <a href="#" className="hover:text-white transition-colors">Privacidad</a>
+              
+              {/* Admin trigger — discreto */}
+              <button
+                onClick={() => setIsAdmin(true)}
+                className="flex flex-col gap-[3px] opacity-20 hover:opacity-50 transition-opacity duration-300 p-1 group"
+                title=""
+                aria-label=""
+              >
+                <span className="block w-3.5 h-px bg-gray-400 transition-all duration-300 group-hover:w-3.5" />
+                <span className="block w-2.5 h-px bg-gray-400 transition-all duration-300 group-hover:w-3.5" />
+                <span className="block w-1.5 h-px bg-gray-400 transition-all duration-300 group-hover:w-3.5" />
+              </button>
             </div>
           </div>
         </div>
