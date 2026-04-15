@@ -1141,7 +1141,8 @@ export default function App() {
                 </div>
               </div>
               <p className="text-gray-400 max-w-sm leading-relaxed mb-8">
-                Somos una empresa familiar con más de 20 años de trayectoria en el mercado inmobiliario de Mar del Plata. Brindamos asesoramiento integral y personalizado.
+                Florencia Plastina, Corredora Inmobiliaria (Reg. 3959).
+                Con más de 8 años de experiencia en Mar del Plata, ofrezco un servicio de asesoramiento inmobiliario cercano, transparente y personalizado. Acompaño a cada cliente en todo el proceso de compra, venta, alquiler y tasación de propiedades, brindando soluciones a medida y enfocadas en obtener los mejores resultados.
               </p>
               <div className="flex gap-4">
                 <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-gold transition-colors">
