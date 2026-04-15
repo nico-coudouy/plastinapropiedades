@@ -588,26 +588,26 @@ export default function App() {
           
           <form onSubmit={handleLogin} className="space-y-6">
             <div>
-              <label className="block text-xs font-bold uppercase tracking-widest text-gray-500 mb-2">Contraseña</label>
+              <label className="block text-xs font-bold uppercase tracking-widest text-[#7B4FA6] mb-2">Contraseña</label>
               <input 
                 type="password" 
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-gold focus:border-transparent outline-none transition-all"
+                className="w-full px-4 py-3 rounded-xl border border-[#E8E0F0] focus:ring-2 focus:ring-[#7B4FA6] focus:border-transparent outline-none transition-all"
                 placeholder="••••••••"
                 required
               />
             </div>
             <button 
               type="submit"
-              className="w-full bg-navy hover:bg-navy/90 text-white font-bold py-3 rounded-xl transition-all shadow-lg"
+              className="w-full bg-[#4A2B6B] hover:bg-[#2E1848] text-white font-bold py-3 rounded-xl transition-all shadow-lg"
             >
               Entrar
             </button>
             <button 
               type="button"
               onClick={() => setIsAdmin(false)}
-              className="w-full text-gray-400 text-sm hover:text-navy transition-colors"
+              className="w-full text-[#B896D4] text-sm hover:text-[#4A2B6B] transition-colors"
             >
               Volver al sitio público
             </button>
