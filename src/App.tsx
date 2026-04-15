@@ -956,7 +956,7 @@ export default function App() {
       <header className="bg-white border-b border-gray-100 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-24 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <a href="/" className="w-12 h-12 rounded-xl overflow-hidden shadow-lg hover:opacity-80 transition-opacity block">
+            <a href="/" className="w-12 h-12 rounded-xl overflow-hidden shadow-lg hover:opacity-80 transition-opacity block flex-shrink-0">
               <img 
                 src="/logo.png" 
                 alt="Plastina Propiedades"
@@ -966,10 +966,11 @@ export default function App() {
             <div>
               <h1 className="text-2xl font-serif font-bold text-navy leading-none">Plastina</h1>
               <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-gold">Propiedades</p>
+              <p className="text-gray-500 text-xs mt-1 font-light italic">
+                Experiencia local, asesoramiento personalizado.
+              </p>
             </div>
           </div>
-
-          {/* --- MENU ELIMINADO AQUÍ --- */}
           
           <div className="flex items-center gap-4">
             <a 
