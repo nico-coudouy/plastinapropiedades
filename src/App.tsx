@@ -50,7 +50,7 @@ const EXTRAS_OPTIONS = [
 ];
 
 const NEIGHBORHOODS = [
-  'Plaza Mitre', 'Los Troncos', 'Chauvín', 'La Perla', 'Playa Grande', 'Güemes', 'Constitución', 'Punta Mogotes', 'Sierra de los Padres'
+  'Centro', 'Los Troncos', 'Chauvín', 'La Perla', 'Playa Grande', 'Güemes', 'Constitución', 'Punta Mogotes', 'Sierra de los Padres', 'Varios'
 ];
 
 // --- Components ---
