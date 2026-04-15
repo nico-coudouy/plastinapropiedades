@@ -966,9 +966,6 @@ export default function App() {
             <div>
               <h1 className="text-2xl font-serif font-bold text-navy leading-none">Plastina</h1>
               <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-gold">Propiedades</p>
-              <p className="text-gray-500 text-xs mt-1 font-light italic">
-                Experiencia local, asesoramiento personalizado.
-              </p>
             </div>
           </div>
           
@@ -1081,14 +1078,20 @@ export default function App() {
       </section>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
-          <div>
-            <h2 className="text-4xl sm:text-5xl font-serif font-bold text-navy mb-4">Propiedades Disponibles</h2>
-            <p className="text-gray-400 max-w-xl">
-              Explorá nuestra selección exclusiva de propiedades en Mar del Plata. Encontrá el hogar que siempre soñaste con Plastina Propiedades.
-            </p>
-          </div>
+        {/* Título principal centrado y elegante */}
+        <div className="text-center mb-16">
+          <h2 className="text-4xl sm:text-5xl font-serif font-bold text-navy mb-4">
+            Propiedades Disponibles
+          </h2>
+          <p className="text-gray-500 text-lg max-w-2xl mx-auto font-light italic">
+            Experiencia local, asesoramiento personalizado.
+          </p>
+          <div className="w-24 h-0.5 bg-gold mx-auto mt-6"></div>
         </div>
+
+        <p className="text-gray-400 max-w-xl text-center mx-auto mb-12">
+          Explorá nuestra selección exclusiva de propiedades en Mar del Plata. Encontrá el hogar que siempre soñaste con Plastina Propiedades.
+        </p>
 
         {loading ? (
           <div className="text-center py-20">
