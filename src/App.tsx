@@ -965,7 +965,7 @@ export default function App() {
           <div className="flex items-center gap-4">
             <a 
               href="https://wa.me/5492235000000" 
-              className="bg-navy text-white px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-navy/90 transition-all shadow-md hidden sm:block"
+              className="bg-[#4A2B6B] hover:bg-[#2E1848] text-white px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest transition-all shadow-md hidden sm:block"
             >
               Contactanos
             </a>
