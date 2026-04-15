@@ -1171,7 +1171,7 @@ export default function App() {
                 </li>
                 <li className="flex items-center gap-3">
                   <Phone size={16} className="text-gold" />
-                  +54 9 223 500-0000
+                  +54 9 2234371111
                 </li>
                 <li className="flex items-center gap-3">
                   <X size={16} className="text-gold" />
