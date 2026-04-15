@@ -1193,25 +1193,26 @@ export default function App() {
             </div>
           </div>
 
-          {/* Barra inferior */}
-          <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] font-bold uppercase tracking-widest text-gray-500">
-            <p>© 2026 Plastina Propiedades. Todos los derechos reservados.</p>
-            <div className="flex items-center gap-6">
-              <a href="#" className="hover:text-white transition-colors">Términos y Condiciones</a>
-              <a href="#" className="hover:text-white transition-colors">Privacidad</a>
+          {/* Barra inferior - Sin links, solo copyright y admin más visible */}
+            <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] font-bold uppercase tracking-widest text-gray-500">
+              <p>© 2026 Plastina Propiedades. Todos los derechos reservados.</p>
               
-              {/* Botón Admin Discreto */}
+              {/* Botón Admin más visible */}
               <button
                 onClick={() => setShowAdminPanel(true)}
-                className="flex flex-col gap-[3px] opacity-20 hover:opacity-50 transition-opacity duration-300 p-1 group"
+                className="flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 rounded-lg transition-all duration-300 group border border-white/10 hover:border-gold/30"
+                title="Acceso Admin"
               >
-                <span className="block w-3.5 h-px bg-gray-400 transition-all duration-300 group-hover:w-3.5" />
-                <span className="block w-2.5 h-px bg-gray-400 transition-all duration-300 group-hover:w-3.5" />
-                <span className="block w-1.5 h-px bg-gray-400 transition-all duration-300 group-hover:w-3.5" />
+                <span className="text-gray-400 group-hover:text-gold transition-colors text-[10px] font-bold uppercase tracking-wider">
+                  Admin
+                </span>
+                <div className="flex flex-col gap-[2px]">
+                  <span className="block w-3 h-px bg-gray-400 transition-all duration-300 group-hover:w-4 group-hover:bg-gold" />
+                  <span className="block w-2.5 h-px bg-gray-400 transition-all duration-300 group-hover:w-3.5 group-hover:bg-gold" />
+                  <span className="block w-2 h-px bg-gray-400 transition-all duration-300 group-hover:w-3 group-hover:bg-gold" />
+                </div>
               </button>
             </div>
-          </div>
-          
         </div>
       </footer>
 
