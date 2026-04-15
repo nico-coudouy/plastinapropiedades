@@ -915,17 +915,17 @@ export default function App() {
                     </div>
                   </div>
 
-                  <div className="flex gap-4 pt-6 border-t border-gray-100">
+                  <div className="flex gap-4 pt-6 border-t border-[#E8E0F0]">
                     <button 
                       type="submit"
-                      className="flex-1 bg-navy hover:bg-navy/90 text-white font-bold py-4 rounded-xl transition-all shadow-lg"
+                      className="flex-1 bg-[#4A2B6B] hover:bg-[#2E1848] text-white font-bold py-4 rounded-xl transition-all shadow-lg"
                     >
                       {editingProperty ? 'Guardar Cambios' : 'Crear Propiedad'}
                     </button>
                     <button 
                       type="button"
                       onClick={() => setShowForm(false)}
-                      className="px-8 bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold py-4 rounded-xl transition-all"
+                      className="px-8 bg-[#F5F2F8] hover:bg-[#E8E0F0] text-[#4A2B6B] font-bold py-4 rounded-xl transition-all"
                     >
                       Cancelar
                     </button>
